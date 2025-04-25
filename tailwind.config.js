@@ -10,5 +10,3 @@ export default {
   },
   plugins: [],
 } satisfies Config
-
-/* CBV Signature; VmVyaXRheg */
