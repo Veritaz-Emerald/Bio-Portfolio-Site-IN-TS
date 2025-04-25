@@ -12,8 +12,8 @@ const initialLinks: SocialLink[] = [
   { id: '5', name: 'YouTube', url: 'https://youtube.com/@seu_canal', icon: 'youtube', enabled: true },
   { id: '6', name: 'Twitch', url: 'https://twitch.tv/seu_user', icon: 'twitch', enabled: true },
   { id: '7', name: 'GitHub', url: 'https://github.com/seu_user', icon: 'github', enabled: true },
-  { id: '8', name: 'TikTok', url: 'https://tiktok.com/@seu_user', icon: 'tiktok', enabled: true } // se coloca false esconde o simbolo
-];
+  { id: '8', name: 'TikTok', url: 'https://tiktok.com/@seu_user', icon: 'tiktok', enabled: true }
+  ];
 
 const song: Song = {
   title: "Roses",
@@ -23,19 +23,28 @@ const song: Song = {
 
 function App() {
   const [links] = useState(initialLinks);
-  const [showBackground, setShowBackground] = useState(true);
   const [canToggleBackground] = useState(true); // coloca false pra não deixar o user mudar o background no olhinho
+  const [defaultBackgroundVisible] = useState(false); // define se o fundo vai ser preto ou com imagem se o toggle tiver desativado, false = fundo preto, true = fundo com image
 
-  const backgroundStyle = showBackground ? {
-    backgroundImage: 'url(https://media.discordapp.net/attachments/1363421405236166666/1364814148541878383/1745264046414.png?ex=680b09ba&is=6809b83a&hm=e8d961e499d7bc4eca93b4ace214fa7e03379369fa98c5e078224320f8fa0d4b&=&format=webp&quality=lossless)', // aq muda o fundo
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat'
-  } : {};
+  const [showBackground, setShowBackground] = useState(() => {
+    return canToggleBackground ? true : defaultBackgroundVisible;
+  });
+
+  const backgroundStyle = showBackground
+    ? {
+        backgroundImage: 'url(https://media.discordapp.net/attachments/1363421405236166666/1364814148541878383/1745264046414.png?ex=680b09ba&is=6809b83a&hm=e8d961e499d7bc4eca93b4ace214fa7e03379369fa98c5e078224320f8fa0d4b&=&format=webp&quality=lossless)', // aq muda o fundo
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundColor: 'black'
+      }
+    : {
+        backgroundColor: 'black'
+      };
 
   return (
     <div 
-      className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-4 relative"
+      className="min-h-screen text-white flex flex-col items-center justify-center p-4 relative"
       style={backgroundStyle}
     >
       {/* toggle botão fundo */}
@@ -53,7 +62,7 @@ function App() {
       <div className="bg-black/40 backdrop-blur-md p-8 rounded-2xl flex flex-col items-center">
         <div className="w-24 h-24 rounded-full overflow-hidden mb-6">
           <img
-            src="https://images-ext-1.discordapp.net/external/ifA1uXQpxqoz68F3sdVtSN914hOPeF3PJ_B_wFRue6k/%3Fsize%3D2048/https/cdn.discordapp.com/avatars/1348861023502733455/519cfb2d4dd843d0831c778da92d7780.png?format=webp&quality=lossless&width=575&height=575"
+            src="https://media.discordapp.net/attachments/1363594533039771748/1365102760823095376/1745264045841.png?ex=680c1684&is=680ac504&hm=8ceb829aff43777906f2b65739160a65e18ecc5e01016853e8ea6c43eaa9912f&=&format=webp&quality=lossless"
             alt="Profile"
             className="w-full h-full object-cover"
           />
@@ -63,17 +72,19 @@ function App() {
         <p className="text-gray-400 text-sm mb-8">eu quero é veritaz mano, entra na veritaz</p>
 
         <div className="flex justify-center gap-4 mb-8 flex-wrap max-w-sm">
-          {links.map(link => (
-            <a
-              key={link.id}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white text-3xl hover:text-gray-300 transition-colors"
-            >
-              <SocialLinks link={link} />
-            </a>
-          ))}
+          {links
+            .filter(link => link.enabled)
+            .map(link => (
+              <a
+                key={link.id}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white text-3xl hover:text-gray-300 transition-colors"
+              >
+                <SocialLinks link={link} />
+              </a>
+            ))}
         </div>
       </div>
 
@@ -84,4 +95,4 @@ function App() {
 
 export default App;
 
-/* CBV Signature; VmVyaXRheg */
+{/* CBV Signature; VmVyaXRheg */}
